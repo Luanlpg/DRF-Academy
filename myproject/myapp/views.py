@@ -5,3 +5,7 @@ from .serializers import BookSerializer
 class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+class AuthorListCreateView(generics.ListCreateAPIView):
+    queryset = []
+    serializer_class = None
