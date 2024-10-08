@@ -2,7 +2,8 @@ from django.db import models
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
+    author = models.ForeignKey('Author', related_name='author_name', blank=True, null=True, on_delete=models.CASCADE)
+
     published_date = models.DateField()
 
     def __str__(self):
@@ -10,4 +11,6 @@ class Book(models.Model):
     
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    books = models.ManyToManyField(Book, related_name='authors')
+
+    def __str__(self) -> str:
+        return self.name
