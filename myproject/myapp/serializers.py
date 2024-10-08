@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Author
+from .models import Book, Author, Review
 from datetime import date
 
 
@@ -8,10 +8,15 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = '__all__'
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 
 class BookSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
-
+    review = ReviewSerializer()
+    
     class Meta:
         model = Book
         fields = '__all__'
