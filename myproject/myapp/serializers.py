@@ -9,7 +9,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookGenericSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
 
     class Meta:
         model = Book
@@ -29,17 +28,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
-    reviews = ReviewSerializer()
+    # reviews = ReviewSerializer()
 
     class Meta:
         model = Book
         fields = '__all__'
-    
-    def validate_published_date(self, value):
-        if value > date.today():
-            raise serializers.ValidationError("A data de publicação não pode ser no futuro.")
-        return value
-    
     
     def validate_published_date(self, value):
         if value > date.today():
