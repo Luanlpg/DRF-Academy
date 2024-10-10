@@ -1,9 +1,12 @@
 from rest_framework import generics
 from .models import Book, Author, Review
-from .serializers import BookSerializer, ReviewSerializer, BookGenericSerializer
+from .serializers import BookSerializer, ReviewSerializer
+from .serializers import BookGenericSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import viewsets
+
 
 class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -11,10 +14,16 @@ class BookListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         author_data = self.request.data.get('author')
-        author, created = Author.objects.get_or_create(name=author_data['name'])
+        author, created = Author.objects.get_or_create(
+            name=author_data['name'])
         serializer.save(author=author)
 
-class ReviewListCreateView(generics.ListCreateAPIView):
+# class ReviewListCreateView(generics.ListCreateAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
@@ -22,7 +31,7 @@ class ReviewListCreateView(generics.ListCreateAPIView):
 class BookAPIView(APIView):
     def get(self, request):
         books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)   
+        serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -32,10 +41,11 @@ class BookAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BookDetailAPIView(APIView):
     def get(self, request, id):
         book = Book.objects.get(pk=id)
-        serializer = BookSerializer(book)   
+        serializer = BookSerializer(book)
         return Response(serializer.data)
 
     def put(self, request, id):
@@ -46,7 +56,7 @@ class BookDetailAPIView(APIView):
             book.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, id):
         books = Book.objects.get(pk=id)
         books.delete()
