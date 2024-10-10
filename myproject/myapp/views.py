@@ -11,20 +11,24 @@ class BookListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         author_data = self.request.data.get('author')
-        author, created = Author.objects.get_or_create(name=author_data['name'])
+        author, created = Author.objects.get_or_create(
+            name=author_data['name']
+            )
         serializer.save(author=author)
+
 
 class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
+
 class BookAPIView(APIView):
-    def get(self,request):
+    def get(self, request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
-    
-    def post(self,request):
+
+    def post(self, request):
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
