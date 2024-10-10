@@ -18,6 +18,7 @@ class BookAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BookDetailAPIView(APIView):
     def get(self, request, id):
         book = Book.objects.get(pk=id)
