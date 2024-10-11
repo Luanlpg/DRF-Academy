@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'myapp',
+    'genericapiviews',
+    'apiviews',
+    'viewsets',
 ]
 
 MIDDLEWARE = [
