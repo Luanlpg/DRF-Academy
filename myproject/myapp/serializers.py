@@ -3,18 +3,18 @@ from .models import Book, Author, Review
 from datetime import date
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorSerializerMyAPP(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
 
-class BookGenericSerializer(serializers.ModelSerializer):
+class BookGenericSerializerMyAPP(serializers.ModelSerializer):
 
     class Meta:
         model = Book
         fields = '__all__'
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReviewSerializerMyAPP(serializers.ModelSerializer):
 
     class Meta:
         model = Review
@@ -26,9 +26,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         return value
 
 
-class BookSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
-    # reviews = ReviewSerializer()
+class BookSerializerMyAPP(serializers.ModelSerializer):
+    author = AuthorSerializerMyAPP()
+    # reviews = ReviewSerializerMyAPP()
 
     class Meta:
         model = Book
