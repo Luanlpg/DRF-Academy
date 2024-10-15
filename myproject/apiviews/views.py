@@ -1,5 +1,6 @@
 from .models import Book
-from .serializers import BookSerializer, BookGenericSerializer
+from rest_framework import serializers
+from .serializers import BookSerializerAPIView, BookGenericSerializerAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,11 +9,11 @@ from rest_framework import status
 class BookAPIView(APIView):
     def get(self, request):
         books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)   
+        serializer = BookSerializerAPIView(books, many=True)   
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = BookGenericSerializer(data=request.data)
+        serializer = BookGenericSerializerAPIView(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -22,11 +23,11 @@ class BookAPIView(APIView):
 class BookDetailAPIView(APIView):
     def get(self, request, id):
         book = Book.objects.get(pk=id)
-        serializer = BookSerializer(book)   
+        serializer = BookSerializerAPIView(book)   
         return Response(serializer.data)
 
     def put(self, request, id):
-        serializer = BookGenericSerializer(data=request.data)
+        serializer = BookGenericSerializerAPIView(data=request.data)
         if serializer.is_valid():
             book = Book.objects.get(pk=id)
             book.title = serializer.data['title']

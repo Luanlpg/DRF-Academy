@@ -3,19 +3,19 @@ from .models import Book, Author
 from datetime import date
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorSerializerGenericView(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = '__all__'
 
-class BookGenericSerializer(serializers.ModelSerializer):
+class BookGenericSerializerGenericView(serializers.ModelSerializer):
 
     class Meta:
         model = Book
         fields = '__all__'
 
-class BookSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
+class BookSerializerGenericView(serializers.ModelSerializer):
+    author = AuthorSerializerGenericView()
 
     class Meta:
         model = Book
