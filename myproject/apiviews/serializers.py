@@ -1,0 +1,28 @@
+from rest_framework import serializers
+from .models import Book, Author
+from datetime import date
+
+
+class AuthorSerializerAPIView(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = '__all__'
+
+class BookGenericSerializerAPIView(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+class BookSerializerAPIView(serializers.ModelSerializer):
+    author = AuthorSerializerAPIView()
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+    
+    def validate_published_date(self, value):
+        if value > date.today():
+            raise serializers.ValidationError("A data de publicação não pode ser no futuro.")
+        return value
+    
