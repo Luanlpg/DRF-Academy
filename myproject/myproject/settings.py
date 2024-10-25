@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apiviews',
     'genericapiviews',
     'viewsets',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuração do broker, usando Redis
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# Configuração do backend para armazenar os resultados das tarefas
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Tempo de expiração dos resultados das tarefas
+CELERY_RESULT_EXPIRES = 3600
+
+CELERY_BEAT_SCHEDULE = {
+    'add-every-5-seconds': {
+        'task': 'core.tasks.add',
+        'schedule': 5.0,  # Tempo em segundos
+        'args': (16, 16)
+    },
+    'add-every-3-seconds': {
+        'task': 'core.tasks.add',
+        'schedule': 3.0,  # Tempo em segundos
+        'args': (5, 5)
+    },
+}

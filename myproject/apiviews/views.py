@@ -4,11 +4,12 @@ from .serializers import BookSerializerAPIView, BookGenericSerializerAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from core.tasks import add
 
 class BookAPIView(APIView):
     def get(self, request):
         books = Book.objects.all()
+        add.delay(len(books), 1)
         serializer = BookSerializerAPIView(books, many=True)   
         return Response(serializer.data)
 
